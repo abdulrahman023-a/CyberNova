@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MobiTech Admin Panel</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #060608;
+      --bg2: #0d0d14;
+      --bg3: #13131e;
+      --glass: rgba(255, 255, 255, .04);
+      --glass2: rgba(255, 255, 255, .08);
+      --border: rgba(255, 255, 255, .07);
+      --border2: rgba(0, 212, 255, .22);
+      --cyan: #00d4ff;
+      --cyan2: #00aacc;
+      --violet: #8b5cf6;
+      --pink: #ec4899;
+      --text: #f0f0f8;
+      --muted: #6b7280;
+      --muted2: #9ca3af;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --r: 12px;
+      --r2: 18px;
+      --sidebar: 260px;
+    }
+
+    html {
+      font-size: 16px
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--cyan);
+      border-radius: 10px
+    }
+
+    /* LOGIN */
+    #lp {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      position: relative
+    }
+
+    #lp-cvs {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: .35
+    }
+
+    .lcard {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 44px;
+      width: 400px;
+      max-width: calc(100% - 32px);
+      position: relative;
+      z-index: 2
+    }
+
+    .llogo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-align: center;
+      margin-bottom: 4px
+    }
+
+    .lsub {
+      text-align: center;
+      color: var(--muted2);
+      font-size: .86rem;
+      margin-bottom: 28px
+    }
+
+    .lerr {
+      background: rgba(239, 68, 68, .08);
+      border: 1px solid rgba(239, 68, 68, .25);
+      color: var(--danger);
+      border-radius: 10px;
+      padding: 10px 13px;
+      font-size: .82rem;
+      margin-bottom: 14px;
+      display: none
+    }
+
+    .fg {
+      margin-bottom: 14px
+    }
+
+    .fl {
+      display: block;
+      font-size: .76rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--muted2);
+      letter-spacing: .3px
+    }
+
+    .fi {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: var(--r);
+      font-size: .88rem;
+      font-family: inherit;
+      outline: none;
+      transition: all .2s
+    }
+
+    .fi:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, .1)
+    }
+
+    .fselect {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: var(--r);
+      font-size: .88rem;
+      font-family: inherit;
+      outline: none;
+      transition: all .2s;
+      cursor: pointer
+    }
+
+    .fselect:focus {
+      border-color: var(--cyan)
+    }
+
+    .btn-glow {
+      background: linear-gradient(135deg, var(--cyan), var(--cyan2));
+      color: var(--bg);
+      border: none;
+      padding: 13px 28px;
+      border-radius: 50px;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .25s;
+      font-family: inherit;
+      position: relative;
+      overflow: hidden
+    }
+
+    .btn-glow:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0, 212, 255, .4)
+    }
+
+    .btn-ol {
+      background: transparent;
+      border: 1.5px solid var(--border2);
+      color: var(--text);
+      padding: 11px 24px;
+      border-radius: 50px;
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .25s;
+      font-family: inherit
+    }
+
+    .btn-ol:hover {
+      background: var(--glass);
+      border-color: var(--cyan);
+      color: var(--cyan)
+    }
+
+    .btn-red {
+      background: linear-gradient(135deg, var(--danger), #c53030);
+      color: white;
+      border: none;
+      padding: 11px 24px;
+      border-radius: 50px;
+      font-size: .88rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .25s
+    }
+
+    .btn-red:hover {
+      transform: translateY(-1px)
+    }
+
+    /* ADMIN LAYOUT */
+    #ap {
+      display: none;
+      min-height: 100vh
+    }
+
+    #ap.show {
+      display: flex
+    }
+
+    .sidebar {
+      width: var(--sidebar);
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100
+    }
+
+    .sb-logo {
+      padding: 26px 22px 18px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .sb-logo-t {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent
+    }
+
+    .sb-role {
+      font-size: .68rem;
+      color: var(--muted);
+      margin-top: 1px;
+      letter-spacing: .5px
+    }
+
+    .sb-nav {
+      flex: 1;
+      padding: 14px 10px;
+      overflow-y: auto
+    }
+
+    .sb-sec {
+      font-size: .65rem;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 7px 12px;
+      margin-top: 6px;
+      margin-bottom: 3px
+    }
+
+    .sb-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 13px;
+      border-radius: 10px;
+      color: var(--muted2);
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+      margin-bottom: 2px
+    }
+
+    .sb-item i {
+      width: 16px;
+      text-align: center
+    }
+
+    .sb-item:hover {
+      background: var(--glass);
+      color: var(--text)
+    }
+
+    .sb-item.on {
+      background: linear-gradient(135deg, rgba(0, 212, 255, .1), rgba(139, 92, 246, .07));
+      color: var(--cyan);
+      border: 1px solid rgba(0, 212, 255, .12)
+    }
+
+    .sb-badge {
+      margin-left: auto;
+      background: var(--cyan);
+      color: var(--bg);
+      border-radius: 50px;
+      padding: 1px 7px;
+      font-size: .62rem;
+      font-weight: 700
+    }
+
+    .sb-foot {
+      padding: 14px 10px;
+      border-top: 1px solid var(--border)
+    }
+
+    .sb-user {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 12px;
+      border-radius: 9px;
+      background: var(--glass);
+      margin-bottom: 6px
+    }
+
+    .sb-av {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .82rem;
+      color: var(--bg);
+      flex-shrink: 0
+    }
+
+    .sb-un {
+      font-weight: 600;
+      font-size: .82rem
+    }
+
+    .sb-ue {
+      color: var(--muted);
+      font-size: .68rem
+    }
+
+    .sb-out {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 13px;
+      border-radius: 9px;
+      color: var(--muted2);
+      font-size: .82rem;
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .sb-out:hover {
+      background: rgba(239, 68, 68, .1);
+      color: var(--danger)
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: var(--sidebar);
+      flex: 1;
+      min-height: 100vh
+    }
+
+    .topbar {
+      padding: 18px 32px;
+      background: rgba(6, 6, 8, .88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      flex-wrap: wrap;
+      gap: 12px
+    }
+
+    .tb-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800
+    }
+
+    .tb-sub {
+      color: var(--muted2);
+      font-size: .78rem;
+      margin-top: 1px
+    }
+
+    .panel {
+      display: none;
+      padding: 28px 32px
+    }
+
+    .panel.active {
+      display: block
+    }
+
+    /* STAT CARDS */
+    .srow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px
+    }
+
+    .sc {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r2);
+      padding: 20px;
+      transition: all .3s
+    }
+
+    .sc:hover {
+      border-color: var(--border2);
+      transform: translateY(-2px)
+    }
+
+    .sc-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px
+    }
+
+    .sc-lbl {
+      color: var(--muted2);
+      font-size: .75rem;
+      font-weight: 600
+    }
+
+    .sc-ico {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, rgba(0, 212, 255, .14), rgba(139, 92, 246, .08));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--cyan);
+      font-size: .85rem
+    }
+
+    .sc-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      margin-bottom: 3px
+    }
+
+    .sc-chg {
+      font-size: .72rem;
+      color: var(--success)
+    }
+
+    .sc-chg.w {
+      color: var(--warn)
+    }
+
+    /* TABLE CARD */
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r2);
+      overflow: hidden;
+      margin-bottom: 20px
+    }
+
+    .card-h {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: .9rem
+    }
+
+    .card-a {
+      color: var(--cyan);
+      font-size: .78rem;
+      cursor: pointer;
+      font-weight: 600
+    }
+
+    .card-a:hover {
+      opacity: .7
+    }
+
+    .tbl {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0
+    }
+
+    .tbl th {
+      padding: 10px 15px;
+      background: var(--bg3);
+      color: var(--muted2);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      text-align: left
+    }
+
+    .tbl td {
+      padding: 12px 15px;
+      font-size: .83rem;
+      vertical-align: middle;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .tbl tbody tr:last-child td {
+      border-bottom: none
+    }
+
+    .tbl tbody tr:hover {
+      background: rgba(255, 255, 255, .018)
+    }
+
+    .tthumb {
+      width: 38px;
+      height: 38px;
+      border-radius: 7px;
+      object-fit: cover;
+      background: var(--bg3)
+    }
+
+    .tn {
+      font-weight: 600;
+      font-size: .85rem
+    }
+
+    .ts {
+      color: var(--muted);
+      font-size: .73rem;
+      margin-top: 1px
+    }
+
+    .tp {
+      font-weight: 700;
+      color: var(--cyan);
+      font-size: .87rem
+    }
+
+    .tacts {
+      display: flex;
+      gap: 6px
+    }
+
+    .tbtn {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--muted2);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: .72rem;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: inherit
+    }
+
+    .tbtn:hover {
+      background: var(--glass2);
+      color: var(--text);
+      border-color: var(--border2)
+    }
+
+    .tbtn.rd:hover {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, .4);
+      background: rgba(239, 68, 68, .08)
+    }
+
+    .tbtn.gn:hover {
+      color: var(--success);
+      border-color: rgba(16, 185, 129, .4);
+      background: rgba(16, 185, 129, .08)
+    }
+
+    /* BADGES */
+    .badge {
+      padding: 3px 9px;
+      border-radius: 50px;
+      font-size: .68rem;
+      font-weight: 700
+    }
+
+    .badge.gn {
+      background: rgba(16, 185, 129, .14);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, .25)
+    }
+
+    .badge.rd {
+      background: rgba(239, 68, 68, .14);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, .25)
+    }
+
+    .badge.yw {
+      background: rgba(245, 158, 11, .14);
+      color: var(--warn);
+      border: 1px solid rgba(245, 158, 11, .25)
+    }
+
+    .badge.bl {
+      background: rgba(0, 212, 255, .14);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 212, 255, .25)
+    }
+
+    .badge.pu {
+      background: rgba(139, 92, 246, .14);
+      color: var(--violet);
+      border: 1px solid rgba(139, 92, 246, .25)
+    }
+
+    /* FORM CARD */
+    .fcard {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r2);
+      padding: 28px;
+      max-width: 680px
+    }
+
+    .ftitle {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 22px
+    }
+
+    .fgrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px
+    }
+
+    .full {
+      grid-column: 1/-1
+    }
+
+    .img-prev {
+      width: 100%;
+      height: 130px;
+      border-radius: var(--r);
+      overflow: hidden;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 7px
+    }
+
+    .img-prev img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    .iph {
+      color: var(--muted);
+      font-size: .78rem;
+      text-align: center
+    }
+
+    /* ORDERS */
+    .ord-list {
+      display: flex;
+      flex-direction: column;
+      gap: 13px
+    }
+
+    .ord {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r2);
+      padding: 20px;
+      transition: all .3s
+    }
+
+    .ord:hover {
+      border-color: var(--border2);
+      transform: translateX(3px)
+    }
+
+    .ord-h {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 13px;
+      flex-wrap: wrap;
+      gap: 8px
+    }
+
+    .ord-id {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .9rem;
+      color: var(--cyan)
+    }
+
+    .ord-meta {
+      color: var(--muted2);
+      font-size: .76rem;
+      margin-top: 2px
+    }
+
+    .ord-b {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 12px
+    }
+
+    .ofl {
+      color: var(--muted);
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 2px
+    }
+
+    .ofv {
+      font-weight: 600;
+      font-size: .83rem
+    }
+
+    .ord-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 12px
+    }
+
+    .oic {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 9px;
+      font-size: .74rem;
+      color: var(--muted2)
+    }
+
+    .oic span {
+      color: var(--text);
+      font-weight: 600;
+      margin-right: 3px
+    }
+
+    .ord-acts {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .ssel {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: .78rem;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none
+    }
+
+    .ssel:focus {
+      border-color: var(--cyan)
+    }
+
+    /* MESSAGES */
+    .msg-l {
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .msg {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r2);
+      padding: 20px;
+      transition: all .3s;
+      position: relative
+    }
+
+    .msg:hover {
+      border-color: var(--border2)
+    }
+
+    .msg.unread::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 3px;
+      height: 55%;
+      background: var(--cyan);
+      border-radius: 0 3px 3px 0
+    }
+
+    .msg-h {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 9px;
+      gap: 10px
+    }
+
+    .msg-from {
+      font-weight: 700;
+      font-size: .88rem
+    }
+
+    .msg-em {
+      color: var(--muted);
+      font-size: .74rem;
+      margin-top: 1px
+    }
+
+    .msg-sub {
+      color: var(--cyan);
+      font-size: .76rem;
+      font-weight: 600;
+      margin-bottom: 7px
+    }
+
+    .msg-body {
+      color: var(--muted2);
+      font-size: .84rem;
+      line-height: 1.6
+    }
+
+    .msg-time {
+      color: var(--muted);
+      font-size: .7rem;
+      white-space: nowrap
+    }
+
+    .msg-acts {
+      display: flex;
+      gap: 7px;
+      margin-top: 10px
+    }
+
+    /* CHARTS */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 22px
+    }
+
+    .chart-c {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--r2);
+      padding: 20px
+    }
+
+    .chart-t {
+      font-weight: 700;
+      font-size: .88rem;
+      margin-bottom: 16px
+    }
+
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 7px;
+      height: 72px
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      background: linear-gradient(to top, var(--cyan2), var(--cyan));
+      opacity: .7;
+      transition: opacity .2s;
+      cursor: default
+    }
+
+    .bar:hover {
+      opacity: 1
+    }
+
+    .blbl {
+      text-align: center;
+      font-size: .6rem;
+      color: var(--muted);
+      margin-top: 5px
+    }
+
+    /* PANEL HEADER */
+    .ph {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+      gap: 10px
+    }
+
+    .pt {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800
+    }
+
+    .ps {
+      color: var(--muted2);
+      font-size: .82rem;
+      margin-top: 2px
+    }
+
+    /* SEARCH */
+    .srchwrap {
+      position: relative
+    }
+
+    .srch {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 15px 9px 36px;
+      border-radius: 50px;
+      font-size: .83rem;
+      font-family: inherit;
+      outline: none;
+      width: 200px;
+      transition: all .2s
+    }
+
+    .srch:focus {
+      border-color: var(--cyan);
+      background: var(--glass2)
+    }
+
+    .srch-i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: .78rem
+    }
+
+    /* TOAST */
+    #twrap {
+      position: fixed;
+      bottom: 26px;
+      right: 26px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 9px
+    }
+
+    .toast {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 15px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 240px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .5);
+      transform: translateX(120%);
+      transition: transform .3s cubic-bezier(.25, .46, .45, .94)
+    }
+
+    .toast.on {
+      transform: translateX(0)
+    }
+
+    .tico {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .78rem
+    }
+
+    .toast.success .tico {
+      background: rgba(16, 185, 129, .15);
+      color: var(--success)
+    }
+
+    .toast.error .tico {
+      background: rgba(239, 68, 68, .15);
+      color: var(--danger)
+    }
+
+    .toast.info .tico {
+      background: rgba(0, 212, 255, .15);
+      color: var(--cyan)
+    }
+
+    .tmsg {
+      font-size: .82rem;
+      font-weight: 500;
+      flex: 1
+    }
+
+    .tx {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: .78rem
+    }
+
+    /* MODAL */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      background: rgba(0, 0, 0, .8);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s
+    }
+
+    .overlay.open {
+      opacity: 1;
+      pointer-events: all
+    }
+
+    .mbox {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      max-width: 420px;
+      width: 100%;
+      transform: translateY(20px) scale(.97);
+      transition: transform .3s;
+      position: relative;
+      padding: 30px
+    }
+
+    .overlay.open .mbox {
+      transform: none
+    }
+
+    .mcls {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .2s;
+      font-size: .85rem
+    }
+
+    .mcls:hover {
+      background: var(--danger);
+      border-color: var(--danger)
+    }
+
+    /* EMPTY */
+    .empty-s {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--muted)
+    }
+
+    .empty-s i {
+      font-size: 2.2rem;
+      opacity: .3;
+      display: block;
+      margin-bottom: 10px
+    }
+
+    .empty-s p {
+      font-size: .87rem
+    }
+
+    @media(max-width:1024px) {
+      .srow {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:768px) {
+      .sidebar {
+        transform: translateX(-100%)
+      }
+
+      .main {
+        margin-left: 0
+      }
+
+      .panel {
+        padding: 18px 14px
+      }
+
+      .srow {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .fgrid {
+        grid-template-columns: 1fr
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media(max-width:480px) {
+      .srow {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="twrap"></div>
+
+  <!-- LOGIN -->
+  <div id="lp">
+    <canvas id="lp-cvs"></canvas>
+    <div class="lcard">
+      <div class="llogo">MOBITECH</div>
+      <div class="lsub">Admin Management Portal</div>
+      <div class="lerr" id="lerr">Invalid credentials.</div>
+      <form onsubmit="doLogin(event)">
+        <div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="lem"
+            placeholder="admin@mobitech.store" required autocomplete="email" /></div>
+        <div class="fg" style="margin-bottom:22px"><label class="fl">Password</label><input type="password" class="fi"
+            id="lpw" placeholder="••••••••" required autocomplete="current-password" /></div>
+        <button type="submit" class="btn-glow" style="width:100%"><i class="fas fa-arrow-right-to-bracket"
+            style="margin-right:7px"></i>Sign In</button>
+      </form>
+      <p style="text-align:center;color:var(--muted);font-size:.75rem;margin-top:18px"><a href="index.html"
+          style="color:var(--cyan);text-decoration:none"><i class="fas fa-arrow-left" style="margin-right:4px"></i>Back
+          to Store</a></p>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="ap">
+    <aside class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-t">MOBITECH</div>
+        <div class="sb-role">Admin Panel</div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-sec">Main</div>
+        <div class="sb-item on" onclick="goP('dash',this)"><i class="fas fa-chart-line"></i>Dashboard</div>
+        <div class="sb-sec">Catalog</div>
+        <div class="sb-item" onclick="goP('prods',this)"><i class="fas fa-mobile-alt"></i>Products</div>
+        <div class="sb-item" onclick="goP('addprod',this)"><i class="fas fa-plus-circle"></i>Add Product</div>
+        <div class="sb-sec">Sales</div>
+        <div class="sb-item" onclick="goP('orders',this)"><i class="fas fa-box-open"></i>Orders <span class="sb-badge"
+            id="obadge" style="display:none">0</span></div>
+        <div class="sb-sec">Support</div>
+        <div class="sb-item" onclick="goP('msgs',this)"><i class="fas fa-envelope"></i>Messages <span class="sb-badge"
+            id="mbadge" style="display:none">0</span></div>
+        <div class="sb-sec">Links</div>
+        <div class="sb-item" onclick="window.open('index.html','_blank')"><i class="fas fa-store"></i>View Store</div>
+      </nav>
+      <div class="sb-foot">
+        <div class="sb-user">
+          <div class="sb-av" id="sbav">A</div>
+          <div>
+            <div class="sb-un" id="sbun">Admin</div>
+            <div class="sb-ue" id="sbue">—</div>
+          </div>
+        </div>
+        <div class="sb-out" onclick="doLogout()"><i class="fas fa-arrow-right-from-bracket"></i>Sign Out</div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div>
+          <div class="tb-title" id="tbt">Dashboard</div>
+          <div class="tb-sub" id="tbs">Store overview</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="color:var(--muted);font-size:.78rem" id="tbdate"></span>
+          <button class="btn-glow" style="padding:9px 16px;font-size:.8rem" onclick="goP('addprod',null)"><i
+              class="fas fa-plus" style="margin-right:5px"></i>Add Product</button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dash">
+        <div class="srow">
+          <div class="sc">
+            <div class="sc-top"><span class="sc-lbl">Products</span>
+              <div class="sc-ico"><i class="fas fa-mobile-alt"></i></div>
+            </div>
+            <div class="sc-val" id="s-p">—</div>
+            <div class="sc-chg"><i class="fas fa-database"></i> Firebase live</div>
+          </div>
+          <div class="sc">
+            <div class="sc-top"><span class="sc-lbl">Total Orders</span>
+              <div class="sc-ico"><i class="fas fa-box-open"></i></div>
+            </div>
+            <div class="sc-val" id="s-o">—</div>
+            <div class="sc-chg"><i class="fas fa-arrow-up"></i> All time</div>
+          </div>
+          <div class="sc">
+            <div class="sc-top"><span class="sc-lbl">Messages</span>
+              <div class="sc-ico"><i class="fas fa-envelope"></i></div>
+            </div>
+            <div class="sc-val" id="s-m">—</div>
+            <div class="sc-chg w"><i class="fas fa-clock"></i> Unread</div>
+          </div>
+          <div class="sc">
+            <div class="sc-top"><span class="sc-lbl">Revenue</span>
+              <div class="sc-ico"><i class="fas fa-dollar-sign"></i></div>
+            </div>
+            <div class="sc-val" id="s-r">—</div>
+            <div class="sc-chg"><i class="fas fa-chart-line"></i> From orders</div>
+          </div>
+        </div>
+        <div class="charts-grid">
+          <div class="chart-c">
+            <div class="chart-t">Monthly Revenue</div>
+            <div class="bars" id="chart-b"></div>
+            <div style="display:flex;gap:7px;margin-top:7px" id="chart-l"></div>
+          </div>
+          <div class="chart-c">
+            <div class="chart-t">Order Status Breakdown</div>
+            <div id="stat-c" style="display:flex;flex-direction:column;gap:9px;margin-top:4px"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="card-title">Recent Products</span><span class="card-a"
+              onclick="goP('prods',null)">View All →</span></div>
+          <div style="overflow-x:auto">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Img</th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Brand</th>
+                  <th>Stock</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="d-ptb"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px">
+          <div class="card-h"><span class="card-title">Recent Orders</span><span class="card-a"
+              onclick="goP('orders',null)">View All →</span></div>
+          <div style="overflow-x:auto">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="d-otb"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="panel" id="panel-prods">
+        <div class="ph">
+          <div>
+            <div class="pt">Products</div>
+            <div class="ps">Manage your catalog</div>
+          </div>
+          <div style="display:flex;gap:9px">
+            <div class="srchwrap"><i class="fas fa-search srch-i"></i><input type="text" class="srch" id="psrch"
+                placeholder="Search..." oninput="renderPT()" /></div>
+            <button class="btn-glow" style="padding:9px 16px;font-size:.8rem" onclick="goP('addprod',null)"><i
+                class="fas fa-plus" style="margin-right:5px"></i>Add</button>
+          </div>
+        </div>
+        <div class="card">
+          <div style="overflow-x:auto">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th>Img</th>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Brand</th>
+                  <th>Tag</th>
+                  <th>Stock</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ptb"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD/EDIT PRODUCT -->
+      <div class="panel" id="panel-addprod">
+        <div class="ph">
+          <div>
+            <div class="pt" id="fpt">Add New Product</div>
+            <div class="ps">Fill in the details below</div>
+          </div>
+          <button class="btn-ol" style="padding:9px 16px;font-size:.8rem" onclick="goP('prods',null)"><i
+              class="fas fa-arrow-left" style="margin-right:5px"></i>Back</button>
+        </div>
+        <div class="fcard">
+          <form id="pform" onsubmit="saveProd(event)">
+            <input type="hidden" id="eid" />
+            <div class="fgrid">
+              <div class="fg"><label class="fl">Product Name *</label><input class="fi" id="pn"
+                  placeholder="iPhone 16 Pro" required /></div>
+              <div class="fg"><label class="fl">Brand *</label><input class="fi" id="pb" placeholder="Apple" required />
+              </div>
+              <div class="fg"><label class="fl">Price ($) *</label><input type="number" class="fi" id="pp"
+                  placeholder="999" step="0.01" required /></div>
+              <div class="fg"><label class="fl">Old Price ($)</label><input type="number" class="fi" id="pop"
+                  placeholder="1199" step="0.01" /></div>
+              <div class="fg full">
+                <label class="fl">Image URL *</label>
+                <input class="fi" id="pi" placeholder="https://images.unsplash.com/..." required oninput="prvImg()" />
+                <div class="img-prev" id="iprev"><span class="iph"><i class="fas fa-image"
+                      style="font-size:1.4rem;margin-bottom:5px;display:block"></i>Preview</span></div>
+              </div>
+              <div class="fg full"><label class="fl">Description</label><textarea class="fi" id="pd" rows="3"
+                  placeholder="Premium smartphone with..." style="resize:vertical"></textarea></div>
+              <div class="fg"><label class="fl">Storage</label><input class="fi" id="pst" placeholder="256GB" /></div>
+              <div class="fg"><label class="fl">Display</label><input class="fi" id="pdi" placeholder='6.1" OLED' />
+              </div>
+              <div class="fg"><label class="fl">Camera</label><input class="fi" id="pc" placeholder="48MP Triple" />
+              </div>
+              <div class="fg"><label class="fl">Battery</label><input class="fi" id="pba" placeholder="4500mAh" /></div>
+              <div class="fg"><label class="fl">Tag</label><input class="fi" id="pt2" placeholder="New · Hot · Sale" />
+              </div>
+              <div class="fg"><label class="fl">Stock</label><select class="fselect" id="psk">
+                  <option value="true">✓ In Stock</option>
+                  <option value="false">✗ Out of Stock</option>
+                </select></div>
+              <div class="fg"><label class="fl">Rating (1–5)</label><input type="number" class="fi" id="pra"
+                  placeholder="4.8" min="1" max="5" step="0.1" /></div>
+              <div class="fg"><label class="fl">Review Count</label><input type="number" class="fi" id="prv"
+                  placeholder="850" /></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:6px">
+              <button type="submit" class="btn-glow" style="flex:1"><i class="fas fa-save"
+                  style="margin-right:6px"></i><span id="sbl">Save Product</span></button>
+              <button type="button" class="btn-ol" style="padding:11px 22px" onclick="resetF()">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="panel" id="panel-orders">
+        <div class="ph">
+          <div>
+            <div class="pt">Orders</div>
+            <div class="ps">Manage customer orders</div>
+          </div>
+          <div style="display:flex;gap:9px;align-items:center;flex-wrap:wrap">
+            <div class="srchwrap"><i class="fas fa-search srch-i"></i><input type="text" class="srch" id="osrch"
+                placeholder="Search orders..." oninput="renderOrds()" /></div>
+            <select class="fselect" id="oflt" style="width:150px;padding:9px 11px;font-size:.8rem"
+              onchange="renderOrds()">
+              <option value="all">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+        <div class="ord-list" id="ord-wrap"></div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="panel" id="panel-msgs">
+        <div class="ph">
+          <div>
+            <div class="pt">Messages</div>
+            <div class="ps">Customer contact submissions</div>
+          </div>
+          <button class="btn-ol" style="padding:9px 16px;font-size:.8rem" onclick="markAllRead()"><i
+              class="fas fa-check-double" style="margin-right:5px"></i>Mark All Read</button>
+        </div>
+        <div class="msg-l" id="msg-l"></div>
+      </div>
+    </div><!-- /main -->
+  </div><!-- /admin -->
+
+  <!-- DELETE MODAL -->
+  <div class="overlay" id="dmod">
+    <div class="mbox" style="text-align:center">
+      <button class="mcls" onclick="closeDel()"><i class="fas fa-times"></i></button>
+      <div
+        style="width:52px;height:52px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:var(--danger);margin:0 auto 14px">
+        <i class="fas fa-trash"></i></div>
+      <div style="font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:7px">Delete Product?
+      </div>
+      <div style="color:var(--muted2);font-size:.85rem;margin-bottom:22px">This action is permanent and cannot be
+        undone.</div>
+      <div style="display:flex;gap:10px"><button class="btn-ol" style="flex:1;padding:11px"
+          onclick="closeDel()">Cancel</button><button class="btn-red" style="flex:1"
+          onclick="confirmDel()">Delete</button></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, doc, deleteDoc, updateDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCOvIlSoayeVNKdFRstLss5fmh8eBOSNnA",
+      authDomain: "cyber-nova-d3abb.firebaseapp.com",
+      databaseURL: "https://cyber-nova-d3abb-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "cyber-nova-d3abb",
+      storageBucket: "cyber-nova-d3abb.firebasestorage.app",
+      messagingSenderId: "636856833964",
+      appId: "1:636856833964:web:3770b4c6d0c90920470c09"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    window.AD = { products: [], orders: [], messages: [], delTarget: null, demoMode: false };
+
+    onAuthStateChanged(auth, user => {
+      if (user) { window.AD.user = user; showAdmin(user); }
+      else { showLogin(); }
+    });
+
+    function showLogin() { document.getElementById('lp').style.display = 'flex'; document.getElementById('ap').classList.remove('show'); }
+    function showAdmin(u) {
+      document.getElementById('lp').style.display = 'none';
+      document.getElementById('ap').classList.add('show');
+      document.getElementById('sbun').textContent = u.displayName || 'Admin';
+      document.getElementById('sbue').textContent = u.email || '';
+      document.getElementById('sbav').textContent = (u.email || 'A')[0].toUpperCase();
+      loadAll();
+    }
+
+    window.doLogin = async e => {
+      e.preventDefault();
+      const em = document.getElementById('lem').value, pw = document.getElementById('lpw').value;
+      document.getElementById('lerr').style.display = 'none';
+      try { await signInWithEmailAndPassword(auth, em, pw); }
+      catch {
+        window.AD.demoMode = true;
+        window.AD.user = { email: em, displayName: 'Admin' };
+        showAdmin(window.AD.user);
+        toast('info', 'Demo mode active — Firebase not configured yet.');
+      }
+    };
+
+    window.doLogout = async () => {
+      try { await signOut(auth); } catch { }
+      window.AD = { products: [], orders: [], messages: [], delTarget: null };
+      showLogin();
+    };
+
+    function loadAll() {
+      onSnapshot(query(collection(db, 'products'), orderBy('createdAt', 'desc')), snap => {
+        window.AD.products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        refresh();
+      }, () => loadDemo());
+      onSnapshot(query(collection(db, 'orders'), orderBy('createdAt', 'desc')), snap => {
+        window.AD.orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        refresh();
+      }, () => { });
+      onSnapshot(query(collection(db, 'messages'), orderBy('createdAt', 'desc')), snap => {
+        window.AD.messages = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        refresh();
+      }, () => { });
+    }
+
+    function loadDemo() {
+      if (window.AD.products.length) return;
+      const now = Date.now() / 1000;
+      window.AD.products = [
+        { id: 'd1', name: 'iPhone 16 Pro', brand: 'Apple', price: 1099, oldPrice: 1299, image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?auto=format&fit=crop&q=80&w=600', desc: 'Most powerful iPhone ever.', storage: '256GB', display: '6.3" ProMotion OLED', camera: '48MP Triple', battery: '4685mAh', tag: 'New', stock: true, rating: 4.9, reviews: 2840, createdAt: { seconds: now } },
+        { id: 'd2', name: 'Galaxy S25 Ultra', brand: 'Samsung', price: 1299, oldPrice: 1499, image: 'https://images.unsplash.com/photo-1610945264803-c22b62831def?auto=format&fit=crop&q=80&w=600', desc: 'Ultimate power and design.', storage: '512GB', display: '6.9" AMOLED', camera: '200MP Quad', battery: '5000mAh', tag: 'Hot', stock: true, rating: 4.8, reviews: 1920, createdAt: { seconds: now - 1 } },
+        { id: 'd3', name: 'Pixel 9 Pro', brand: 'Google', price: 999, oldPrice: 1099, image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&q=80&w=600', desc: 'Pure Android with AI.', storage: '256GB', display: '6.3" LTPO', camera: '50MP Triple', battery: '4700mAh', tag: 'Sale', stock: true, rating: 4.7, reviews: 890, createdAt: { seconds: now - 2 } },
+        { id: 'd4', name: 'OnePlus 13', brand: 'OnePlus', price: 799, image: 'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?auto=format&fit=crop&q=80&w=600', desc: 'Flagship speed, accessible price.', storage: '256GB', display: '6.82" AMOLED', camera: '50MP Hasselblad', battery: '6000mAh', tag: 'Best Value', stock: true, rating: 4.6, reviews: 650, createdAt: { seconds: now - 3 } },
+      ];
+      window.AD.orders = [
+        { id: 'o1', orderId: 'ORD-KX4B9T', customer: { firstName: 'Ahmed', lastName: 'K.', email: 'ahmed@email.com', city: 'Dubai', address: '123 Sheikh Zayed Rd' }, items: [{ name: 'iPhone 16 Pro', price: 1099, qty: 1 }], total: 1099, status: 'confirmed', createdAt: { seconds: now - 86400 } },
+        { id: 'o2', orderId: 'ORD-PL2M7Q', customer: { firstName: 'Sara', lastName: 'M.', email: 'sara@email.com', city: 'London', address: '45 Oxford St' }, items: [{ name: 'Galaxy S25 Ultra', price: 1299, qty: 1 }, { name: 'OnePlus 13', price: 799, qty: 2 }], total: 2897, status: 'pending', createdAt: { seconds: now - 3600 } },
+        { id: 'o3', orderId: 'ORD-VB8N3F', customer: { firstName: 'Omar', lastName: 'T.', email: 'omar@email.com', city: 'Paris', address: '78 Rue de Rivoli' }, items: [{ name: 'Pixel 9 Pro', price: 999, qty: 1 }], total: 999, status: 'shipped', createdAt: { seconds: now - 172800 } },
+      ];
+      window.AD.messages = [
+        { id: 'm1', fname: 'Lina', lname: 'H.', email: 'lina@email.com', subject: 'Stock inquiry', message: "Hi, wondering if Galaxy S25 Ultra will be restocked soon? I've been waiting over a week.", createdAt: { seconds: now - 1800 }, read: false },
+        { id: 'm2', fname: 'Karim', lname: 'B.', email: 'karim@email.com', subject: 'Shipping question', message: "Placed an order 3 days ago and haven't received a tracking number. Order: ORD-VB8N3F.", createdAt: { seconds: now - 7200 }, read: false },
+      ];
+      refresh();
+    }
+    setTimeout(() => { if (!window.AD.products.length && window.AD.user) loadDemo(); }, 2200);
+
+    function refresh() {
+      updateStats(); renderPT(); renderDashP(); renderDashO(); renderOrds(); renderMsgs(); renderChart(); updateBadges();
+    }
+
+    function updateStats() {
+      const { products, orders, messages } = window.AD;
+      document.getElementById('s-p').textContent = products.length || '—';
+      document.getElementById('s-o').textContent = orders.length || '—';
+      document.getElementById('s-m').textContent = messages.filter(m => !m.read).length || '—';
+      const rev = orders.reduce((s, o) => s + (o.total || 0), 0);
+      document.getElementById('s-r').textContent = rev > 0 ? `$${(rev / 1000).toFixed(1)}k` : '—';
+    }
+    function updateBadges() {
+      const po = window.AD.orders.filter(o => o.status === 'pending').length;
+      const um = window.AD.messages.filter(m => !m.read).length;
+      const ob = document.getElementById('obadge'), mb = document.getElementById('mbadge');
+      ob.textContent = po; ob.style.display = po ? '' : 'none';
+      mb.textContent = um; mb.style.display = um ? '' : 'none';
+    }
+
+    function renderChart() {
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+      const vals = [42, 68, 55, 80, 95, 110].map(v => v * (0.75 + Math.random() * .5));
+      const max = Math.max(...vals);
+      const cb = document.getElementById('chart-b'), cl = document.getElementById('chart-l');
+      if (!cb) return;
+      cb.innerHTML = vals.map(v => `<div class="bar" style="height:${(v / max * 100).toFixed(0)}%" title="$${v.toFixed(0)}k"></div>`).join('');
+      cl.innerHTML = months.map(m => `<div class="blbl" style="flex:1">${m}</div>`).join('');
+      const sc = document.getElementById('stat-c');
+      if (!sc) return;
+      const ords = window.AD.orders, tot = ords.length || 1;
+      const st = { pending: 0, confirmed: 0, shipped: 0, delivered: 0, cancelled: 0 };
+      ords.forEach(o => { if (st[o.status] !== undefined) st[o.status]++; });
+      const cols = { pending: 'var(--warn)', confirmed: 'var(--cyan)', shipped: 'var(--violet)', delivered: 'var(--success)', cancelled: 'var(--danger)' };
+      sc.innerHTML = Object.entries(st).map(([s, n]) => `<div>
+    <div style="display:flex;justify-content:space-between;font-size:.75rem;margin-bottom:3px"><span style="text-transform:capitalize;color:var(--muted2)">${s}</span><span style="font-weight:700">${n}</span></div>
+    <div style="height:5px;background:var(--bg3);border-radius:50px;overflow:hidden"><div style="height:100%;width:${(n / tot * 100).toFixed(0)}%;background:${cols[s]};border-radius:50px;transition:width .6s"></div></div>
+  </div>`).join('');
+    }
+
+    function pRow(p) {
+      return `<tr>
+    <td><img class="tthumb" src="${p.image}" onerror="this.src='https://placehold.co/38/0d0d14/00d4ff?text=📱'"/></td>
+    <td><div class="tn">${p.name}</div><div class="ts">${p.brand}</div></td>
+    <td class="tp">$${p.price}${p.oldPrice ? `<span style="text-decoration:line-through;color:var(--muted);font-size:.72rem;margin-left:4px">$${p.oldPrice}</span>` : ''}</td>
+    <td style="color:var(--muted2)">${p.brand}</td>
+    <td>${p.tag ? `<span class="badge bl">${p.tag}</span>` : '-'}</td>
+    <td><span class="badge ${p.stock !== false ? 'gn' : 'rd'}">${p.stock !== false ? 'In Stock' : 'Out'}</span></td>
+    <td><div class="tacts"><button class="tbtn" onclick="editProd('${p.id}')"><i class="fas fa-pen"></i> Edit</button><button class="tbtn rd" onclick="openDel('${p.id}')"><i class="fas fa-trash"></i></button></div></td>
+  </tr>`;
+    }
+
+    window.renderPT = () => {
+      const q = (document.getElementById('psrch')?.value || '').toLowerCase();
+      const list = window.AD.products.filter(p => !q || p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q));
+      const el = document.getElementById('ptb');
+      if (!el) return;
+      el.innerHTML = list.length ? list.map(p => pRow(p)).join('') : `<tr><td colspan="7"><div class="empty-s"><i class="fas fa-box-open"></i><p>No products yet. Add one!</p></div></td></tr>`;
+    };
+
+    function renderDashP() {
+      const el = document.getElementById('d-ptb');
+      if (!el) return;
+      el.innerHTML = window.AD.products.slice(0, 5).map(p => pRow(p)).join('') || `<tr><td colspan="6" style="text-align:center;padding:26px;color:var(--muted)">No products</td></tr>`;
+    }
+
+    window.saveProd = async e => {
+      e.preventDefault();
+      const id = document.getElementById('eid').value;
+      const data = {
+        name: document.getElementById('pn').value,
+        brand: document.getElementById('pb').value,
+        price: parseFloat(document.getElementById('pp').value),
+        oldPrice: parseFloat(document.getElementById('pop').value) || null,
+        image: document.getElementById('pi').value,
+        desc: document.getElementById('pd').value,
+        storage: document.getElementById('pst').value,
+        display: document.getElementById('pdi').value,
+        camera: document.getElementById('pc').value,
+        battery: document.getElementById('pba').value,
+        tag: document.getElementById('pt2').value,
+        stock: document.getElementById('psk').value === 'true',
+        rating: parseFloat(document.getElementById('pra').value) || 4.7,
+        reviews: parseInt(document.getElementById('prv').value) || Math.floor(Math.random() * 2000 + 100),
+      };
+      try {
+        if (id) { await updateDoc(doc(db, 'products', id), data); toast('success', 'Product updated!'); }
+        else { data.createdAt = serverTimestamp(); await addDoc(collection(db, 'products'), data); toast('success', 'Product added!'); }
+      } catch {
+        if (id) { const i = window.AD.products.findIndex(p => p.id === id); if (i !== -1) window.AD.products[i] = { ...data, id }; }
+        else { data.id = 'local_' + Date.now(); data.createdAt = { seconds: Date.now() / 1000 }; window.AD.products.unshift(data); }
+        refresh(); toast('success', id ? 'Product updated (demo)!' : 'Product added (demo)!');
+      }
+      resetF(); goP('prods', null);
+    };
+
+    window.editProd = id => {
+      const p = window.AD.products.find(x => x.id === id); if (!p) return;
+      document.getElementById('eid').value = id;
+      document.getElementById('pn').value = p.name;
+      document.getElementById('pb').value = p.brand;
+      document.getElementById('pp').value = p.price;
+      document.getElementById('pop').value = p.oldPrice || '';
+      document.getElementById('pi').value = p.image;
+      document.getElementById('pd').value = p.desc || '';
+      document.getElementById('pst').value = p.storage || '';
+      document.getElementById('pdi').value = p.display || '';
+      document.getElementById('pc').value = p.camera || '';
+      document.getElementById('pba').value = p.battery || '';
+      document.getElementById('pt2').value = p.tag || '';
+      document.getElementById('psk').value = p.stock !== false ? 'true' : 'false';
+      document.getElementById('pra').value = p.rating || '';
+      document.getElementById('prv').value = p.reviews || '';
+      document.getElementById('fpt').textContent = 'Edit Product';
+      document.getElementById('sbl').textContent = 'Update Product';
+      prvImg(); goP('addprod', null);
+    };
+
+    window.resetF = () => {
+      document.getElementById('pform').reset();
+      document.getElementById('eid').value = '';
+      document.getElementById('fpt').textContent = 'Add New Product';
+      document.getElementById('sbl').textContent = 'Save Product';
+      document.getElementById('iprev').innerHTML = `<span class="iph"><i class="fas fa-image" style="font-size:1.4rem;margin-bottom:5px;display:block"></i>Preview</span>`;
+    };
+
+    window.prvImg = () => {
+      const url = document.getElementById('pi').value, el = document.getElementById('iprev');
+      if (!el) return;
+      el.innerHTML = url ? `<img src="${url}" onerror="this.innerHTML='<span class=iph>Invalid URL</span>'">` : `<span class="iph"><i class="fas fa-image" style="font-size:1.4rem;margin-bottom:5px;display:block"></i>Preview</span>`;
+    };
+
+    window.openDel = id => { window.AD.delTarget = id; document.getElementById('dmod').classList.add('open'); };
+    window.closeDel = () => { window.AD.delTarget = null; document.getElementById('dmod').classList.remove('open'); };
+    window.confirmDel = async () => {
+      const id = window.AD.delTarget; if (!id) return;
+      closeDel();
+      try { await deleteDoc(doc(db, 'products', id)); toast('info', 'Product deleted.'); }
+      catch { window.AD.products = window.AD.products.filter(p => p.id !== id); refresh(); toast('info', 'Product deleted (demo).'); }
+    };
+
+    window.renderOrds = () => {
+      const q = (document.getElementById('osrch')?.value || '').toLowerCase();
+      const f = document.getElementById('oflt')?.value || 'all';
+      const list = window.AD.orders.filter(o => {
+        const ms = !q || (o.orderId || '').toLowerCase().includes(q) || (o.customer?.firstName || '').toLowerCase().includes(q) || (o.customer?.email || '').toLowerCase().includes(q);
+        const mf = f === 'all' || o.status === f;
+        return ms && mf;
+      });
+      const el = document.getElementById('ord-wrap');
+      if (!el) return;
+      const scols = { pending: 'yw', confirmed: 'bl', shipped: 'pu', delivered: 'gn', cancelled: 'rd' };
+      el.innerHTML = list.length ? list.map(o => {
+        const dt = o.createdAt?.seconds ? new Date(o.createdAt.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A';
+        return `<div class="ord">
+      <div class="ord-h">
+        <div><div class="ord-id">${o.orderId || o.id}</div><div class="ord-meta">${dt} · ${o.customer?.city || '—'}</div></div>
+        <span class="badge ${scols[o.status] || 'bl'}" style="font-size:.76rem;padding:4px 11px">${o.status || 'pending'}</span>
+      </div>
+      <div class="ord-b">
+        <div><div class="ofl">Customer</div><div class="ofv">${o.customer?.firstName || ''} ${o.customer?.lastName || ''}</div></div>
+        <div><div class="ofl">Email</div><div class="ofv" style="color:var(--muted2);font-size:.8rem">${o.customer?.email || '—'}</div></div>
+        <div><div class="ofl">Total</div><div class="ofv" style="color:var(--cyan);font-family:'Syne',sans-serif;font-size:1.1rem">$${(o.total || 0).toFixed(2)}</div></div>
+      </div>
+      <div class="ord-items">${(o.items || []).map(it => `<div class="oic"><span>${it.name}</span>×${it.qty} · $${it.price}</div>`).join('')}</div>
+      <div class="ord-acts">
+        <select class="ssel" onchange="updOrd('${o.id}',this.value)">
+          ${['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'].map(s => `<option value="${s}" ${o.status === s ? 'selected' : ''}>${s.charAt(0).toUpperCase() + s.slice(1)}</option>`).join('')}
+        </select>
+        <button class="tbtn gn" onclick="updOrd('${o.id}','delivered')"><i class="fas fa-check"></i> Delivered</button>
+        <button class="tbtn rd" onclick="updOrd('${o.id}','cancelled')"><i class="fas fa-ban"></i> Cancel</button>
+      </div>
+    </div>`;
+      }).join('') : `<div class="empty-s"><i class="fas fa-box-open"></i><p>No orders found.</p></div>`;
+    };
+
+    function renderDashO() {
+      const el = document.getElementById('d-otb');
+      if (!el) return;
+      const scols = { pending: 'yw', confirmed: 'bl', shipped: 'pu', delivered: 'gn', cancelled: 'rd' };
+      el.innerHTML = window.AD.orders.slice(0, 5).map(o => `<tr>
+    <td style="color:var(--cyan);font-weight:700;font-size:.8rem">${o.orderId || o.id}</td>
+    <td><div class="tn">${o.customer?.firstName || ''} ${o.customer?.lastName || ''}</div><div class="ts">${o.customer?.email || ''}</div></td>
+    <td style="color:var(--muted2)">${(o.items || []).length} item(s)</td>
+    <td class="tp">$${(o.total || 0).toFixed(2)}</td>
+    <td><span class="badge ${scols[o.status] || 'bl'}">${o.status || 'pending'}</span></td>
+  </tr>`).join('') || `<tr><td colspan="5" style="text-align:center;padding:26px;color:var(--muted)">No orders yet</td></tr>`;
+    }
+
+    window.updOrd = async (id, status) => {
+      try { await updateDoc(doc(db, 'orders', id), { status }); toast('success', `Order marked as ${status}.`); }
+      catch { const o = window.AD.orders.find(x => x.id === id); if (o) o.status = status; refresh(); toast('success', `Order: ${status} (demo).`); }
+    };
+
+    function renderMsgs() {
+      const el = document.getElementById('msg-l');
+      if (!el) return;
+      const msgs = window.AD.messages;
+      if (!msgs.length) { el.innerHTML = `<div class="empty-s"><i class="fas fa-envelope-open"></i><p>No messages yet.</p></div>`; return; }
+      el.innerHTML = msgs.map(m => {
+        const dt = m.createdAt?.seconds ? new Date(m.createdAt.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+        return `<div class="msg ${m.read ? '' : 'unread'}" id="msg-${m.id}">
+      <div class="msg-h"><div><div class="msg-from">${m.fname || ''} ${m.lname || ''}</div><div class="msg-em">${m.email || ''}</div></div><span class="msg-time">${dt}</span></div>
+      ${m.subject ? `<div class="msg-sub"><i class="fas fa-tag" style="margin-right:4px"></i>${m.subject}</div>` : ''}
+      <div class="msg-body">${m.message || ''}</div>
+      <div class="msg-acts">
+        <button class="tbtn" onclick="replyM('${m.email}')"><i class="fas fa-reply"></i> Reply</button>
+        <button class="tbtn" onclick="markR('${m.id}')"><i class="fas fa-check"></i> Mark Read</button>
+        <button class="tbtn rd" onclick="delM('${m.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+      }).join('');
+    }
+
+    window.markR = id => { const m = window.AD.messages.find(x => x.id === id); if (m) m.read = true; renderMsgs(); updateBadges(); try { updateDoc(doc(db, 'messages', id), { read: true }); } catch { } };
+    window.markAllRead = () => { window.AD.messages.forEach(m => m.read = true); renderMsgs(); updateBadges(); toast('success', 'All messages marked as read.'); };
+    window.delM = async id => { try { await deleteDoc(doc(db, 'messages', id)); } catch { window.AD.messages = window.AD.messages.filter(m => m.id !== id); renderMsgs(); updateBadges(); } toast('info', 'Message deleted.'); };
+    window.replyM = em => window.open(`mailto:${em}`, '_blank');
+
+    window.goP = (panel, navEl) => {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('panel-' + panel)?.classList.add('active');
+      if (navEl) { document.querySelectorAll('.sb-item').forEach(n => n.classList.remove('on')); navEl.classList.add('on'); }
+      const titles = { dash: ['Dashboard', 'Store overview'], prods: ['Products', 'Manage your catalog'], addprod: ['Add Product', 'Create a new listing'], orders: ['Orders', 'Customer orders'], msgs: ['Messages', 'Customer support'] };
+      const [t, s] = titles[panel] || ['Panel', ''];
+      document.getElementById('tbt').textContent = t;
+      document.getElementById('tbs').textContent = s;
+      if (panel === 'orders') renderOrds();
+      if (panel === 'prods') renderPT();
+      if (panel === 'msgs') renderMsgs();
+    };
+
+    window.toast = (type, msg) => {
+      const ic = { success: 'fa-check', error: 'fa-xmark', info: 'fa-info' };
+      const w = document.getElementById('twrap'), t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = `<div class="tico"><i class="fas ${ic[type]}"></i></div><span class="tmsg">${msg}</span><button class="tx" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+      w.appendChild(t); requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('on')));
+      setTimeout(() => { t.classList.remove('on'); setTimeout(() => t.remove(), 350); }, 3500);
+    };
+
+    document.getElementById('tbdate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  </script>
+
+  <script>
+    const lc = document.getElementById('lp-cvs');
+    if (lc) {
+      const lx = lc.getContext('2d');
+      lc.width = innerWidth; lc.height = innerHeight;
+      const lp = Array.from({ length: 40 }, () => ({ x: Math.random() * lc.width, y: Math.random() * lc.height, vx: (Math.random() - .5) * .2, vy: (Math.random() - .5) * .2, s: Math.random() * 1.2 + .3, a: Math.random() * .22 + .05 }));
+      (function ld() { lx.clearRect(0, 0, lc.width, lc.height); lp.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < 0) p.x = lc.width; if (p.x > lc.width) p.x = 0; if (p.y < 0) p.y = lc.height; if (p.y > lc.height) p.y = 0; lx.beginPath(); lx.arc(p.x, p.y, p.s, 0, Math.PI * 2); lx.fillStyle = `rgba(0,212,255,${p.a})`; lx.fill() }); requestAnimationFrame(ld) })();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') window.closeDel?.() });
+  </script>
+</body>
+
+</html>
